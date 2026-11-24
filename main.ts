@@ -1,14 +1,22 @@
-// "Ex-Burglar Home Audit" — chosen by duelling 10 candidate pitches on the brief (bizarre at first glance, real at second: ex-burglars as security auditors, homeowners pay $300); runner-up was retired teachers marking dating profiles.
+// Ex-Burglar Home Audit — a one-sentence startup pitch, written out by this program.
+//
+// The idea sounds like a joke at first: pay people who used to break into houses
+// to try breaking into yours, then hand you a plain-language report of every
+// weak spot they found. The second look is where it turns real — every
+// homeowner already spends real money on locks, cameras and alarms without
+// ever knowing which of those would actually stop someone.
+
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-// The grader sets MAKEFUN_OUTPUT_DIR to the directory it prepared for us
-// ("/output" in its sandbox) and runs this program as an unprivileged user
-// (uid 65534). The directory already exists and is owned by the grader, so
-// this program must never create, chmod, or otherwise touch the directory
-// itself — it only writes the single file inside it.
-const text =
+// The grader decides where output goes and tells us through this variable;
+// "/output" is only the local fallback so the script still runs by hand.
+// We never create or chmod that directory ourselves — it belongs to the grader,
+// and touching it is the fastest way to get the run killed with EPERM.
+const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+
+const pitch =
   "We hire former burglars to break into your house and tell you exactly how they did it, because homeowners pay $300 for the burglary that never happens.";
 
-const outputDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
-writeFileSync(join(outputDir, "entry.txt"), text, "utf8");
+// One file, one sentence, nothing else — the whole entry is this line.
+writeFileSync(join(outDir, "entry.txt"), pitch);
